@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<head>
+<title>Items for Sale</title>
+<link rel="stylesheet" href="shopfront.css" />
+</head>
+
+<body>
+
+<h1>Items for Sale</h1>
+ 
+<hr>
+
+<form id="order" method = "post" action = "shopfront.php" onsubmit="return validateCreditCard()">
+	
+  <table>
+
+	<tr> 
+	<td>Photo</td>
+	<td>Item</td>
+	<td>Description</td>
+	<td>Price, &pound; (excl VAT)</td>
+	<td>Quantity</td>
+	<td>Cost</td>
+	</tr>
+
+	<tr id="crawdad">
+	<td><img src="items/crawdad.jpg" /></td>
+	<td>Crawdad</td>
+	<td>It's actually a "crayfish".</td>
+	<td>4.50<input id = "crawdadPrice" type="hidden" value="4.50" /></td>
+	<td><input name = "crawdadQuantity" id = "crawdadQuantity" type="number" value="0" pattern="[0-9]+" size="3" min="0" oninput="priceCalculation('crawdadPrice', 'crawdadQuantity', 'crawdadTotal')" /></td>
+	<td><input id = "crawdadTotal" disabled type="text" size="8" value = "0.00" /></td>
+	</tr>
+
+	<tr id="gorilla">
+	<td><img src="items/gorilla.jpg" /></td>
+	<td>Gorilla</td>
+	<td>Gives a friendly wave.</td>
+	<td>8.50<input id = "gorillaPrice" type="hidden" value="8.50" /></td>
+	<td><input name = "gorillaQuantity" id = "gorillaQuantity" type="number" value="0" pattern="[0-9]+" size="3" min = "0" oninput = "priceCalculation('gorillaPrice', 'gorillaQuantity', 'gorillaTotal')"/></td>
+	<td><input id = "gorillaTotal" disabled type="text" size="8" value = "0.00" /></td>
+	</tr>
+
+	<tr id="ninja">
+	<td><img src="items/ninja.jpg" /></td>
+	<td>Ninja</td>
+	<td>Hero in a half shell.</td>
+	<td>12.50<input id = "ninjaPrice" type="hidden" value="12.50" /></td>
+	<td><input name = "ninjaQuantity" id = "ninjaQuantity" type="number" value="0" pattern="[0-9]+" size="3" min = "0" oninput = "priceCalculation('ninjaPrice', 'ninjaQuantity', 'ninjaTotal')"/></td>
+	<td><input id = "ninjaTotal" disabled type="text" size="8" value = "0.00" /></td>
+	</tr>
+
+	<tr id="psion">
+	<td><img src="items/psion.jpg" /></td>
+	<td>Psion</td>
+	<td>Computing Classic.</td>
+	<td>110.00<input id = "psionPrice" type="hidden" value="110.00" /></td>
+	<td><input name = "psionQuantity" id = "psionQuantity" type="number" value="0" pattern="[0-9]+" size="3" min = "0" oninput = "priceCalculation('psionPrice', 'psionQuantity', 'psionTotal')"/></td>
+	<td><input id = "psionTotal" disabled type="text" size="8" value = "0.00"/></td>
+	</tr>
+
+	<tr id="totem">
+	<td><img src="items/totem.jpg" /></td>
+	<td>Totem</td>
+	<td>Mysterious and wooden.</td>
+	<td>150.00<input id = "totemPrice" type="hidden" value="150.00" /></td>
+	<td><input name = "totemQuantity" id = "totemQuantity" type="number" value="0" pattern="[0-9]+" size="3" min = "0" oninput = "priceCalculation('totemPrice', 'totemQuantity', 'totemTotal')" /></td>
+	<td><input id = "totemTotal" disabled type="text" size="8" value= "0.00" /></td>
+	</tr>
+
+	<tr> 
+	<td colspan="5">Discount</td>
+	<td><input id = "discount" readonly type="text" name = "delivery" size="8" /></td>
+  </tr>
+
+
+	<tr> 
+	<td colspan="5">VAT (20%)</td>
+	<td><input id = "VAT" readonly type="text" name = "vat" size="8" /></td>
+  </tr>
+
+	<tr> 
+	<td colspan="5">Subtotal</td>
+  <td>
+	  <input id = "subTotal" readonly type="text" name = "subtotal" size="8" />
+	</td>
+	</tr>
+
+	<tr> 
+	<td colspan="5">Delivery charge</td>
+	<td><input id = "deliveryCharge" readonly type="text" name = "delivery" size="8" /></td>
+  </tr>
+
+	<tr> 
+	<td colspan="5">Total cost</td>
+	<td> 
+	  <input id = "totalCost"  readonly type="text" name = "total_cost" size="8" />
+	</td>
+	</tr>
+
+</table>
+
+<hr/>
+ 
+<h2>Personal Details</h2>
+<p>
+
+<table>
+
+<tr>
+<td>Surname:</td>
+  <td><input type="text" name="surname" size="36" pattern = "^[A-Za-z]+$" required/></td>
+</tr>
+
+<tr>
+<td>First name:</td>
+  <td><input type="text" name="firstname" size="36" pattern = "^[A-Za-z]+$" required /></td>
+</tr>
+
+<tr>
+<td>Email:</td>
+<td><input type="email" name="email" pattern = "^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$" size="64" required /></td>
+</tr>
+
+</table>
+
+<hr /> 
+<h2>Payment Details</h2> 
+		
+<table>
+
+<tr> 
+<td>Payment Method:</td>
+<td>
+<select id = "paymentMethod" name="payment_method" size="1">
+<option value="amex" selected>Amex</option>
+<option value="mastercard">MasterCard</option>
+<option value="visa">Visa</option>
+</select>
+</td>
+</tr>
+
+<tr> 
+<td>Name of Card Holder:</td>
+<td> 
+<input id = "nameOfCardHolder" type="text" name="card_name" size="64" required />
+</td>
+</tr>
+
+<tr> 
+<td>Card Number:</td>
+<td> 
+<input id = "cardNumber" type="text" name="card_number" size="19" required />
+</td>
+</tr>
+
+<tr>
+<td>Security Code:</td>
+<td>
+<input id = "securityCode" type="text" name="sec_code" size="3" pattern="\d{3}" required />
+</td>
+</tr>
+
+</table>
+
+<hr />
+
+<h2>Shipping Details</h2>
+
+<table>
+
+<tr>
+<td>Address:</td>
+<td><input type="text" name="ship_address" size="128" required/></td>
+</tr>
+
+<tr>
+<td>City/ Town:</td>
+<td><input type="text" name="ship_city" size="64" required/></td>
+</tr>
+
+<tr>
+<td>Region:</td>
+<td><input type="text" name="ship_region" size="64" required/></td>
+</tr>
+
+<tr>
+<td>Postcode:</td>
+<td><input type="text" name="ship_postcode" size="12" pattern = "[A-Z]{1,2}[0-9][0-9A-Z]?\s?[0-9][A-Z]{2}" required/></td>
+</tr>
+
+<tr>
+<td>Country:</td>
+<td><input type="text" name="ship_country" size="12" required/></td>
+</tr>
+
+</table>
+ 
+<hr />
+
+<p>
+	<button form = "order" type="submit" > Submit </button>
+</p>
+ 
+</form>
+
+<script src="shopfront.js"></script>
+
+</body>
+</html>

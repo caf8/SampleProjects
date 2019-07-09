@@ -1,0 +1,143 @@
+
+
+//number of kills/ lives ratio
+//Chnage difficulty using ratio
+//Find nice values for the variables
+//DONE score
+//DONE lives
+//menu
+//DONE graphics
+//music
+//highscore
+//flocking algo
+//commentcode
+//report
+//blood hit around the outside
+//I love you Laura Xxxx
+//WILL NEVER FINSH loving Laura Xxx
+
+
+//FINAL TO DO LIST
+//Edit flocking code
+//Clean code
+//Comment code
+//Check setter values
+//Add to AI and check values more see Laura's notes
+//30 minute test at 5pm
+//Finish report
+
+//Only Span more than 15 seekers then they get enraged
+
+
+//Laura's Notes
+// //DONE blue = weapon, yellow= health, purple = speed
+//
+//
+// DONE - have the character heath bar at the same point in the screen e.g. top???
+// DONE - need to click before player can move - I assume this will be fixed with a starting screen
+// DONE - picking up packs is difficult because only pick them up when the centre of the character has reached it.  -  change ifs in detectCollisionWeapon, etc.
+// DONE - wall AI fires constantly when you hit it. Player can't shoot afterwards. I think the walls' shooting uses up the player's ammo
+// LAURA - wall AIs look like they're wedged in the wall rather than next to it
+// EXTENSION TO DO- when seekers combine when they are in one spot and are easier to kill. When seekers are all next to the player, one bullet hits all of them in that position - solved by flocking
+// DONE - still need to assign random true-seekers and some false-seekers
+// DONE - seekers are faster than the player (unless 2 buttons are pressed)
+// DONE - player goes faster when two buttons are pressed (e.g. up and right button)  - I can fix but will take a little while
+// REPORT/MAYBELATERDONTKNOWYET- setters don't give or take damage upon collision with player - is this what you want?
+// DONE - setters can leave the walls - I can look at this
+// REPORT - should AIs lose health when going through explosions? - write why you did/didn't do this
+// DONE  - grey explosions seem to take a lot of health, especially compared to yellow health
+
+
+
+
+//to test
+// . each ai works exactly how it's meant to 
+// . character shooting always works (bug where bullet sticks to map) 
+// . power ups work
+// - check each state does what it's meant to
+// - think about scaling
+//     - state 3/4 starts to be difficult (e.g. need health packs) - case 4 take more damage than given by a tiny bit
+//     - hardest state damage taken >= damage given (must play well to survive)
+//     - 0 starting, 4 hardest, 5 really easy
+
+
+//what I've done
+//DONE - bullets - check all of bullet class and check where bullets get drawn in practical class (lines 358 - 386)
+//DONE- setters don't get stuck - in Practical class
+//DONE      old:       if(setters[i].position1.x == setters[i].position2.x && setters[i].position1.y == setters[i].position2.y){
+//DONE      new:       if(setters[i].position1.x <= setters[i].position2.x + 1 && setters[i].position1.x >= setters[i].position2.x - 1 
+//DONE      new:       && setters[i].position1.y <= setters[i].position2.y + 1 && setters[i].position1.y >= setters[i].position2.y - 1){
+//DONE - made bouncers bouce off walls more smoothly - AIBounce class (the value 10 is half the diametre of the circle of the bouncer)
+//DONE      old:    if ((position.x = 0) || (position.x = width)){
+//DONE      new:    if ((position.x <= 10) || (position.x >= width-10)){
+//DONE      old:    if ((position.y = 0) || (position.y = height)){
+//DONE      new:    if ((position.y <= 10) || (position.y >= height -10)){
+//DONE - made bullets all the same colour - added fill(0) before they are drawn
+//DONE - character doesn't go off screen - lines 40-51 in Character class
+//More than 20 guys then flocking... maybe
+
+
+
+
+
+
+
+
+
+//miss you...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//set stuff then one that did least add too, one that did most lessen
+
+
+
+
+
+
+//Last check
+//change colour of bullet
+//fixed walls AI
+//changed explosion to explode out of middle of bomb and also grow from the centre
+//made planning AI state what I believe it should be, as well as all other AI states
+//HAVEN'T YET DONE SETTERS
+
+
+
+
+
+//start state: less frequent bullets from walls, less frequent walls
+//    keep packs on the screen for longer
+//    slower bouncers, less frequent
+//    only one of each seeker, moving slower
+//    only one setter, same damage
+//
+//second state: less frequent bullets from walls, same amount of walls
+//    slower bouncers
+//    same # seekers, moving a bit slower
+//    same # setters, less bombs, slightly more samage
+//
+//3rd state: same
+//    less packs
+//    bouncers the same
+//    more seekers
+//    more love from Laura
+//    same # setters, less bombs, more damage
+//
+//4th state: same # wall bullets, more walls being generated. MAYBE more damage per wall bullet
+//    less packs, on for less time
+//    more bouncers, more damage
+//    more seekers and damage
+//    more setters, more damage

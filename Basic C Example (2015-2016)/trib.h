@@ -1,0 +1,5 @@
+int tribcalc(int n);
+
+
+
+

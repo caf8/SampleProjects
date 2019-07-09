@@ -1,0 +1,7 @@
+Read Me file for Proxy Server.
+
+Before running the program make sure the proxy has been set up, this can be done in network settings. The port in network set up must also equal the port number used in the proxy program, which is 14700.
+
+The proxy can be used by using the internet with a search engine. A good one to use is Bing as it's not https by default. Using the proxy like this you should be able to visit the web pages described in the report.
+
+However the proxy will not work for some websites that like to redirect back to http. With the proxy trying to constantly convert it to https is will get stuck in an infinite redirection loop. This is the case for websites such as bbc. 

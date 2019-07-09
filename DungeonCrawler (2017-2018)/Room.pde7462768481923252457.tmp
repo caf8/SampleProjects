@@ -1,0 +1,145 @@
+public class Room{
+  
+  boolean [][] room;
+  int Stone_Height = 25;
+  int Stone_Width = 25;
+  float chanceToStartAlive = 0.45;
+  int birthNum = 4;
+  int deathNum = 4;
+  int numberOfSteps = 10;
+  public Room(){
+ room = new boolean[width/Stone_Width][height/Stone_Height];
+    while(true){
+     destroyMap();
+
+    initialiseRoom();
+    for(int i = 0; i < numberOfSteps; i++){
+      simulation();
+    }
+    for(int i = 0; i < room.length; i++){
+      for(int j = 0; j < room[i].length; j++){
+        if(i == 0){
+           room[0][j] = true;
+         }else if(i == room.length-1){
+           room[room.length-1][j] = true;
+         }
+         if(j == 0){
+             room[i][0] = true;
+         }else if(j == room.length-1){
+           room[i][room.length-1] = true;
+         }
+      }
+    }
+    if(checkMap()){ //<>//
+      break;
+    }
+    }
+  }
+   public void destroyMap() {
+    for (int x=0; x<room.length; x++) {
+      for (int y=0; y<room[x].length; y++) {
+        room[x][y] = false;
+      }
+    }
+  }
+  
+  
+  public void simulation(){
+    boolean [][] newRoom = new boolean[width/Stone_Width][height/Stone_Height];
+    for(int i = 0; i < room.length; i++){
+       for(int j = 0; j < room[i].length; j++){
+         int numNeighbours = countNeighbours(i,j);
+        // print(numNeighbours);
+         if(room[i][j]){
+           if(numNeighbours < deathNum){
+             newRoom[i][j] = false;
+           }else{
+             newRoom[i][j] = true;
+           }
+         }else{
+           if(numNeighbours > birthNum){
+             newRoom[i][j] = true;
+           }else{
+             newRoom[i][j] = false;
+           }
+         }
+             
+       }
+    }
+    room = newRoom;
+  }
+  
+  public boolean checkMap(){
+
+    boolean[][] checkRoom = new boolean [room.length][room[0].length];
+    for(int i = 0; i < room.length; i++){
+     for(int j = 0; j < room[i].length; j++){
+         checkRoom[i][j] = room[i][j];
+     }
+    }
+    checkRoom = floodFill((int) random(0, checkRoom.length), (int) random(0, checkRoom[0].length),checkRoom);
+    for(int i = 0; i < checkRoom[0].length; i++){
+     for(int j = 0; j < checkRoom[i].length; j++){
+       if(checkRoom[i][j] == false){
+         return false;
+       }
+     }
+    }
+    return true;
+  }
+  
+  
+  public boolean[][] floodFill(int num1, int num2, boolean[][] checkRoom){
+    println("checkRoom: " + checkRoom[0].length);
+    println("num1: " + num1);
+    println("num2: " + num2);
+    if(checkRoom[num1][num2] == false){
+      checkRoom[num1][num2] = true;
+      if(num1 < checkRoom.length-1){
+        floodFill(num1+1, num2, checkRoom);
+      }
+      if(num1 > 0){
+        floodFill(num1-1, num2, checkRoom);
+      }
+      if(num2 < checkRoom[0].length-1){
+        floodFill(num1, num2+1, checkRoom);
+      }
+      if(num2 > 0){
+        floodFill(num1, num2-1, checkRoom);
+      }
+    }
+    
+    return checkRoom;
+  }
+  
+  public int countNeighbours(int i, int j){
+    int count = 0;
+     for (int m=-1; m<2; m++) {
+      for (int n=-1; n<2; n++) {
+        int neighbourX = i+m;
+        int neighbourY = j+n;
+        if(m == 0 && n == 0){
+        }else if(neighbourX < 0 || neighbourY < 0 || neighbourX >= room.length || neighbourY >= room[0].length) {
+          count = count +1;
+        }else if(room[neighbourX][neighbourY]){
+          count = count + 1;
+        } 
+        
+      }
+     }
+    return count;
+  }
+  
+  public void initialiseRoom(){
+   for(int i = 0; i < room.length; i++){
+     for(int j = 0; j < room[i].length; j++){
+       if(random(0,1) < chanceToStartAlive){
+         room[i][j] = true;
+       }
+    }
+  }
+  
+  
+  }
+  
+}

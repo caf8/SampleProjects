@@ -1,0 +1,63 @@
+final class AIBounce{
+  
+  
+  public int state1 = 0;
+  
+  
+  
+  
+  
+  
+  public PVector position, velocity;
+  public int health = 50;
+  
+  
+  AIBounce(int x, int y, float xVel, float yVel){
+    position = new PVector(x,y);
+    velocity = new PVector(xVel, yVel);
+    
+  }
+  
+  void AIBounceUpdate(int state){
+    switch(state){
+      case 0:
+        startingHealth = 50;
+        break;
+        
+      case 1:
+         startingHealth = 5000;
+        break;
+        
+      case 2:
+        break;
+    }
+    
+    
+    
+    
+    
+    position.add(velocity);
+    
+    if ((position.x < 0) || (position.x > width)){
+      velocity.x =  -velocity.x;
+      position.add(velocity);
+      if(velocity.x < 0){
+        velocity.x = -random(3,5);
+      }else{
+        velocity.x = random(3,5);
+      }
+    }
+    if ((position.y < 0) || (position.y > height)){
+      velocity.y =  -velocity.y;
+      position.add(velocity);
+      if(velocity.y < 0){
+        velocity.y = -random(3,5);
+      }else{
+        velocity.y = random(3,5);
+      }
+    }
+    
+
+  }
+  
+}

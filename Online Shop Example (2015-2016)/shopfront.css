@@ -1,0 +1,17 @@
+td {
+	padding: 1rem; /* space the cells out a little for easy reading */
+}
+
+td img {
+	display: inline-block; /* fixes spacing problem for images in a table cell */
+}
+
+input:invalid{
+	border-style: solid;
+	border-color: red;
+}
+
+input:valid{
+	border-style: solid;
+	border-color: green;
+}

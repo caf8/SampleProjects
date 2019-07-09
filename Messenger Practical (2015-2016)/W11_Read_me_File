@@ -1,0 +1,7 @@
+For running the messenger application you must ssh into your own network. i,e
+
+ssh username.host.cs.st-andrews.ac.uk.
+
+Then you must run the server.
+
+Finally you can then load the url page that is inside the report.

@@ -1,0 +1,231 @@
+﻿<Page
+    x:Class="UITEST.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UITEST"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:userControl="using:RadialMenuControl.UserControl"
+    xmlns:components="using:RadialMenuControl.Components"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid x:ConnectionId='2' Name="itemGridView">
+        <Button x:ConnectionId='3' BorderBrush="Black" BorderThickness="5" Background="#66ad99"                       VerticalAlignment="Bottom" Height="150" Width="150" Margin="460,0,0,5">
+            <Image Source="Assets\ScrollDown.png" Stretch="Uniform"/>
+        </Button>
+        <Button x:ConnectionId='4' BorderBrush="Black" BorderThickness="5" Background="#66ad99"                         VerticalAlignment="Bottom" Height="150" Width="150" Margin="895,0,0,5">
+            <Image Source="Assets\scrollUp.png" Stretch="Uniform"/>
+        </Button>
+        <Button x:ConnectionId='5' BorderBrush="Black" BorderThickness="5" Background="#66ad99"                         VerticalAlignment="Bottom"  Height="150" Width="150" Margin="1310,0,0,5">
+            <Image Source="Assets\home.png" Stretch="Uniform"/>
+        </Button>
+        <TextBox x:ConnectionId='6' x:Name="nameInput"
+                  Visibility="Visible"   Header="Enter your name:" PlaceholderText="Name"
+                     Width="200" HorizontalAlignment="Left" Margin="1600,0,0,0" Height="55" VerticalAlignment="Stretch"/>
+
+      
+       
+
+        <ListView x:ConnectionId='7'  x:Name="listView1" VerticalAlignment="Top"  Width="1000" Height="800" Margin="0,50,0,0">
+
+
+            <ListView.ItemTemplate>
+
+                <DataTemplate                              >
+                    <Border x:ConnectionId='61' BorderThickness="4,4,4,4" BorderBrush="Black">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200" />
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="400"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Rectangle x:ConnectionId='62'  Grid.Row="0" Grid.Column="0"                                                              Width="100" Height="64" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="100,5,0,0"></Rectangle>
+                            <Rectangle x:ConnectionId='63'  Name="SocialMediaType" Grid.Row="0" Grid.Column="0"                                                               Width="100" Height="64"  VerticalAlignment="Top" Margin="0,5,0,0" HorizontalAlignment="Left" ></Rectangle>
+                            <TextBlock x:ConnectionId='64'                              Foreground="black" Width="50"
+                           FontSize="15" TextWrapping="Wrap" Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="130,25,0,0"  Height="32"/>
+                            <TextBlock x:ConnectionId='65'                                                                                                              Width="50"
+                           FontSize="15" TextWrapping="Wrap" Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="30,25,0,0"  Height="32"/>
+
+                            <TextBlock x:ConnectionId='66'                           Foreground="Teal" Width="500"
+                                                        TextWrapping="Wrap" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" Grid.RowSpan="2"  Margin="0,80,80,80"/>
+                            <Button x:ConnectionId='67' BorderThickness="2" BorderBrush="Black" Background="#66ad99"                             Width="1000" Height="100" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="1000" Grid.RowSpan="2" VerticalAlignment="Bottom"></Button>
+                            <TextBlock Text="React" Foreground="Black" Width="50" 
+                           FontSize="20" TextWrapping="Wrap" Grid.Row="4" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,180,25"  Height="32"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button x:ConnectionId='8'   BorderThickness="2" BorderBrush="Black" Background="#66ad99" Name="options" FontSize="20" Content="Actions Filters" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Height="500" Width="210"                      />
+        <Button x:ConnectionId='9' BorderThickness="2" BorderBrush="Black" Background="#66ad99" Name="filterOptions" FontSize="20" Content="News Feed Filter" HorizontalAlignment="Left" Margin="0,500,0,0" VerticalAlignment="Top" Height="500" Width="210"                            />
+
+        <Button x:ConnectionId='10' BorderThickness="2" BorderBrush="Black"  Background="#66ad99" Name="dwellOptions" FontSize="20" Content="Dwell Speeds" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Top" Height="500" Width="210"                           />
+        <Button x:ConnectionId='11' BorderThickness="2" BorderBrush="Black" Background="#66ad99" Name="exitOptions" FontSize="20" Content="Options" HorizontalAlignment="Right" Margin="0,500,0,0" VerticalAlignment="Top" Height="500" Width="210"                           />
+        
+
+        <Rectangle x:ConnectionId='12' Name="cover" Width="10000" Height="10000" Fill="White"  Visibility="Collapsed"></Rectangle>
+
+
+
+        <userControl:Floating  >
+            <Border>
+                <Grid Background="White">
+                    <userControl:RadialMenu x:ConnectionId='56'  x:Name="radialMenu4Items" Diameter="1000" StartAngle="0" CenterButtonIcon="&#x1f369;" CenterButtonBorder="Black" Margin="10,0,-10,0" Visibility="Collapsed">
+                        <userControl:RadialMenu.Buttons>
+                            <components:RadialMenuButton x:ConnectionId='57'  x:Name="radialMenu1" LabelSize="20" Label="Share" Icon="🌏" />
+                            <components:RadialMenuButton x:ConnectionId='58'  x:Name="radialMenu2" LabelSize="20" Label="Sun" Icon="🌞" />
+                            <components:RadialMenuButton x:ConnectionId='59'  x:Name="radialMenu3" LabelSize="20" Label="Food" Icon="🍱" />
+                            <components:RadialMenuButton x:ConnectionId='60'  x:Name="radialMenu4" LabelSize="20" Label="Halloween" Icon="🎃" />
+                        </userControl:RadialMenu.Buttons>
+                    </userControl:RadialMenu>
+                </Grid>
+            </Border>
+        </userControl:Floating>
+
+
+        <TextBox x:ConnectionId='13' x:Name="generalTextInput"
+                     Header="Insert Text" PlaceholderText="e.g Hello World"
+                      HorizontalAlignment="Center" Margin="0,150,0,750" Height="100" Width="750" Visibility="Collapsed"/>
+        
+
+        <Button x:ConnectionId='14' BorderBrush="Black" BorderThickness="5" Background="White" Name="postToTwitter" VerticalAlignment="Center" Height="250" Width="250" Margin="300,0,0,5" Visibility="Collapsed">
+            <Image Source="Assets\twitter.png" Stretch="Uniform"/>
+        </Button>
+        <Button x:ConnectionId='15' BorderBrush="Black" BorderThickness="5" Background="White" Name="postToReddit"  VerticalAlignment="Center" Height="250" Width="250"  Margin="820,0,0,5" Visibility="Collapsed">
+            <Image Source="Assets\reddit.png" Stretch="Uniform"/>
+        </Button>
+        <Button x:ConnectionId='16' BorderBrush="Black" BorderThickness="5" Background="White" Name="postToBoth"  VerticalAlignment="Center"  Height="250" Width="250" Margin="1310,0,0,5" Visibility="Collapsed">
+            <Image Source="Assets\tweddit.png" Stretch="Uniform"/>
+        </Button>
+
+        <Button x:ConnectionId='17' BorderBrush="Black" BorderThickness="5" Background="White" Name="shareToTwitter" VerticalAlignment="Center" Height="250" Width="250" Margin="300,0,0,5" Visibility="Collapsed">
+            <Image Source="Assets\twitter.png" Stretch="Uniform"/>
+        </Button>
+
+        <Button x:ConnectionId='18' BorderBrush="Black" BorderThickness="5" Background="White" Name="shareToReddit"  VerticalAlignment="Center" Height="250" Width="250" Margin="820,0,0,5" Visibility="Collapsed">
+            <Image Source="Assets\reddit.png" Stretch="Uniform"/>
+        </Button>
+        <Button x:ConnectionId='19' BorderBrush="Black" BorderThickness="5" Background="White" Name="shareToBoth"  VerticalAlignment="Center"  Height="250" Width="250" Margin="1310,0,0,5" Visibility="Collapsed">
+            <Image Source="Assets\tweddit.png" Stretch="Uniform"/>
+        </Button>
+
+
+        <TextBlock x:ConnectionId='20' TextWrapping="Wrap" Name="loading" Text="Loading 0%" HorizontalAlignment="Center" VerticalAlignment="Center" Width="500"  Height="500" Foreground="black" FontSize="60" Visibility="Visible"/>
+
+        <Button x:ConnectionId='21' BorderThickness="2" BorderBrush="Black" Background="#66ad99" Name="submitComment" FontSize="20" Content="Submit Comment" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Bottom" Height="500" Width="1000" Visibility="Collapsed"/>
+
+        <userControl:Floating  >
+            <Border>
+                <Grid Background="White">
+                    <userControl:RadialMenu x:ConnectionId='52'  x:Name="radialMenu3Items" Diameter="1000" StartAngle="0" CenterButtonIcon="&#x1f369;" CenterButtonBorder="Black" Margin="10,0,-10,0" Visibility="Collapsed">
+                        <userControl:RadialMenu.Buttons>
+                            <components:RadialMenuButton x:ConnectionId='53'  x:Name="radialMenu31" Label="Share" Icon="🌏" />
+                            <components:RadialMenuButton x:ConnectionId='54'  x:Name="radialMenu32" Label="Sun" Icon="🌞" />
+                            <components:RadialMenuButton x:ConnectionId='55'  x:Name="radialMenu33" Label="Food" Icon="🍱" />
+                        </userControl:RadialMenu.Buttons>
+                    </userControl:RadialMenu>
+                </Grid>
+            </Border>
+        </userControl:Floating>
+
+        <userControl:Floating  >
+            <Border>
+                <Grid Background="White">
+                    <userControl:RadialMenu x:ConnectionId='49'  x:Name="radialMenu2Items" Diameter="1000" StartAngle="0" CenterButtonIcon="&#x1f369;" CenterButtonBorder="Black" Margin="10,0,-10,0" Visibility="Collapsed">
+                        <userControl:RadialMenu.Buttons>
+                            <components:RadialMenuButton x:ConnectionId='50' x:Name="radialMenu21" Label="Share" Icon="🌏" />
+                            <components:RadialMenuButton x:ConnectionId='51'  x:Name="radialMenu22" Label="Sun" Icon="🌞" />
+                        </userControl:RadialMenu.Buttons>
+                    </userControl:RadialMenu>
+                </Grid>
+            </Border>
+        </userControl:Floating>
+
+        <userControl:Floating  >
+            <Border>
+                <Grid Background="White">
+                    <userControl:RadialMenu x:ConnectionId='46'  x:Name="radialMenu1Items" Diameter="1000" StartAngle="0" CenterButtonIcon="&#x1f369;" CenterButtonBorder="Black" Margin="10,0,-10,0" Visibility="Collapsed">
+                        <userControl:RadialMenu.Buttons>
+                            <components:RadialMenuButton x:ConnectionId='47'  x:Name="radialMenu11" LabelSize="20" Label="Share" Icon="🌏" />
+                            <components:RadialMenuButton x:ConnectionId='48'  x:Name="radialMen" />
+                        </userControl:RadialMenu.Buttons>
+                    </userControl:RadialMenu>
+                </Grid>
+            </Border>
+        </userControl:Floating>
+
+        <userControl:Floating  >
+            <Border>
+                <Grid Background="White">
+                    <userControl:RadialMenu x:ConnectionId='41'  x:Name="socialMediaOptions" Diameter="1000" StartAngle="0" CenterButtonIcon="&#x1f369;" CenterButtonBorder="Black" Margin="10,0,-10,0" Visibility="Collapsed">
+                        <userControl:RadialMenu.Buttons>
+                            <components:RadialMenuButton x:ConnectionId='42' Type="Toggle" x:Name="shareOption" Label="Share" Icon="📤" />
+                            <components:RadialMenuButton x:ConnectionId='43' Type="Toggle" x:Name="commentOption" Label="Comment" Icon="✍️" />
+                            <components:RadialMenuButton x:ConnectionId='44'  Type="Toggle" x:Name="likeOption" Label="Like" Icon="👍" />
+                            <components:RadialMenuButton x:ConnectionId='45'  Type="Toggle" x:Name="postOption" Label="Post" Icon="✉️" />
+                        </userControl:RadialMenu.Buttons>
+                    </userControl:RadialMenu>
+                </Grid>
+            </Border>
+        </userControl:Floating>
+
+        <userControl:Floating  >
+            <Border>
+                <Grid Background="White">
+                    <userControl:RadialMenu x:ConnectionId='33'  x:Name="filterOptionsMenu" Diameter="1000" StartAngle="0" CenterButtonIcon="&#x1f369;" CenterButtonBorder="Black" Margin="10,0,-10,0" Visibility="Collapsed">
+                        <userControl:RadialMenu.Buttons>
+                            <components:RadialMenuButton x:ConnectionId='34'  Type="Toggle" x:Name="twitterFilter" Label="Twitter" Icon="🐥" />
+                            <components:RadialMenuButton x:ConnectionId='35' Type="Toggle" x:Name="redditFilter" Label="Reddit" Icon="👾" />
+                            <components:RadialMenuButton x:ConnectionId='36'  Type="Toggle" x:Name="newsFilter" Label="News" Icon="📰" />
+                            <components:RadialMenuButton x:ConnectionId='37'  Type="Toggle" x:Name="techFilter" Label="Tech" Icon="📡" />
+                            <components:RadialMenuButton x:ConnectionId='38'  Type="Toggle" x:Name="sportFilter" Label="Sport" Icon="⚽" />
+                            <components:RadialMenuButton x:ConnectionId='39'  Type="Toggle" x:Name="friendsFilter" Label="Food" Icon="🥐" />
+                            <components:RadialMenuButton x:ConnectionId='40'  Type="Toggle" x:Name="offFilter" Label="Reset" Icon="🔴" />
+                        </userControl:RadialMenu.Buttons>
+                    </userControl:RadialMenu>
+                </Grid>
+            </Border>
+        </userControl:Floating>
+
+        <userControl:Floating  >
+            <Border>
+                <Grid Background="White">
+                    <userControl:RadialMenu x:ConnectionId='29'  x:Name="dwellOptionsMenu" Diameter="1000" StartAngle="0" CenterButtonIcon="&#x1f369;" CenterButtonBorder="Black" Margin="10,0,-10,0" Visibility="Collapsed">
+                        <userControl:RadialMenu.Buttons>
+                            <components:RadialMenuButton x:ConnectionId='30'  Type="Toggle" x:Name="slowDwell" Label="Slow" Icon="🥉" />
+                            <components:RadialMenuButton x:ConnectionId='31' Type="Toggle" x:Name="midDwell" Label="Medium" Icon="🥈" />
+                            <components:RadialMenuButton x:ConnectionId='32'  Type="Toggle" x:Name="fastDwell" Label="Fast" Icon="🥇" />
+                        </userControl:RadialMenu.Buttons>
+                    </userControl:RadialMenu>
+                </Grid>
+            </Border>
+        </userControl:Floating>
+
+        <userControl:Floating  >
+            <Border>
+                <Grid Background="White">
+                    <userControl:RadialMenu x:ConnectionId='24'  x:Name="otherOptionsMenu" Diameter="1000" StartAngle="0" CenterButtonIcon="&#x1f369;" CenterButtonBorder="Black" Margin="10,0,-10,0" Visibility="Collapsed">
+                        <userControl:RadialMenu.Buttons>
+                            <components:RadialMenuButton x:ConnectionId='25'  Type="Toggle" x:Name="refresh" Label="refresh" Icon="🔄" />
+                            <components:RadialMenuButton x:ConnectionId='26'  Type="Toggle" x:Name="createPost" Label="Create Post" Icon="🖋️" />
+                            <components:RadialMenuButton x:ConnectionId='27' Type="Toggle" x:Name="exit" Label="exit" Icon="🚪" />
+                            <components:RadialMenuButton x:ConnectionId='28'  Type="Toggle" x:Name="save" Label="save" Icon="💾" />
+                        </userControl:RadialMenu.Buttons>
+                    </userControl:RadialMenu>
+                </Grid>
+            </Border>
+        </userControl:Floating>
+        <Button x:ConnectionId='22' Name="closeMenu" Foreground="White" Background="White" BorderBrush="Black" BorderThickness="5" Tag="Close" Margin="0,0,0,0" VerticalAlignment="Top" Height="250" Width="250"                         Visibility="Collapsed">
+            <Image Source="Assets\closeMenuImage.png" Stretch="Uniform"/>
+        </Button>
+        <TextBlock x:ConnectionId='23' TextWrapping="Wrap" Name="seeMorePost"  Margin="0,100,0,0" Width="1000"  Height="1000" Foreground="Teal" FontSize="24" Visibility="Collapsed"/>
+        
+    </Grid>
+
+</Page>
+

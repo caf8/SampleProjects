@@ -1,0 +1,6 @@
+This is text3 file which tests all different type of charcters on lines
+23231
+@?~@>~
+
+....
+

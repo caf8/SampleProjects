@@ -1,0 +1,53 @@
+states 9
+q0
+q1
+q2
+q3
+q4
+q5
+q6
+qa +
+qr -
+alphabet 5 a b # $ £
+q0 a q1 £ R
+q0 b q1 $ R
+q0 # qr # L
+q0 $ qr # L
+q0 £ qr £ L
+q0 _ qr _ L
+q1 a q1 a R
+q1 b q1 b R
+q1 # q2 # R
+q1 $ qr $ L
+q1 £ qr £ L
+q1 _ qr _ L
+q2 a q3 # L
+q2 b q4 # L
+q2 # qr # L
+q2 $ qr $ L
+q2 £ qr £ L
+q2 _ q6 _ L
+q3 a qr a L
+q3 b qr b L
+q3 # q5 a L
+q3 $ qr $ L
+q3 £ qr £ L
+q3 _ qr _ L
+q4 a qr a L
+q4 b qr b L
+q4 # q5 b L
+q4 $ qr $ L
+q4 £ qr £ L
+q4 _ qr _ L
+q5 a q5 a L
+q5 b q5 b L
+q5 # q5 # L
+q5 $ q1 $ R
+q5 £ q1 £ R
+q5 _ qr _ L
+q6 a q6 a L
+q6 b q6 b L
+q6 # q6 # L
+q6 $ qa b R
+q6 £ qa a R
+q6 _ qr _ L

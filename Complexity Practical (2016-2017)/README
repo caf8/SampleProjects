@@ -1,0 +1,4 @@
+To run the experiment on the different algorithms you will need to change line 38 in Main.java
+
+To run the FFT have FFT.fft(x)
+To run the DFT have DFT.dft(x)

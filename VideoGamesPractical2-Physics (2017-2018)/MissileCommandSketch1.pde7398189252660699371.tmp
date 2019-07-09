@@ -1,0 +1,340 @@
+final int MY_HEIGHT = 800; //<>//
+final int MY_WIDTH = 800;
+final int MAX_PARTICLES_BASE = 1000;
+final int num_intial_Particles = 20;
+final int OBJECT_SIZE = 20;
+final int NO_Missiles= 100 ;
+final int Max_Ammo = 50;
+
+int numParticles = num_intial_Particles;
+int Ammo = Max_Ammo;
+
+int numExplosions = 0;
+int score =0;
+
+Particle[] particles;
+Missile[] missiles ;
+Explosion[] explosions;
+
+boolean Tower1 = false;
+boolean Tower2 = false;
+boolean Tower3 = false;
+boolean Tower4 = false;
+boolean Tower5 = false;
+boolean hit = false;
+
+int xStart, yStart, xEnd, yEnd ;
+int mouseposx, mouseposy;
+PImage img, img1;
+
+
+UserForce userForce;
+ExplosionForce explosionforce;
+ForceRegistry forceRegistry ;
+
+void setup() {
+  img = loadImage("Town-PNG-File.png");
+  img1 = loadImage("explosionpng.png");
+  size(800, 800);
+  particles = new Particle[MAX_PARTICLES_BASE*10];
+  explosions =  new Explosion[10];
+  missiles = new Missile[NO_Missiles] ;
+
+  Gravity gravity = new Gravity(new PVector(0f, .1)) ; 
+  Drag drag = new Drag(30, 30) ;
+  userForce = new UserForce(new PVector(0f, 0f)) ;
+
+  //Create the ForceRegistry
+  forceRegistry = new ForceRegistry() ;  
+
+
+
+  for (int i =0; i < num_intial_Particles; i++) {
+    particles[i] = new Particle((int)random(0, MY_WIDTH), 
+      10, 
+      random(-.5f, .5f), 
+      random(-.5f, .5f), 
+      random(0.001f, 0.005f), false) ;
+    forceRegistry.add(particles[i], gravity) ;
+    forceRegistry.add(particles[i], drag) ;
+    forceRegistry.add(particles[i], userForce) ;
+  }
+
+  particles[numParticles] = new Particle((int)random(400), 
+    400, 
+    0, 
+    0, 
+    0, true) ;
+
+  numParticles++;
+}
+
+void addParticle(Particle p) {
+  Gravity gravity = new Gravity(new PVector(0f, .1f)) ; 
+  Drag drag = new Drag(15, 15) ;
+  userForce = new UserForce(new PVector(0f, 0f)) ;
+  for (int i =0; i < (MAX_PARTICLES_BASE*10); i++) {
+    if (particles[i] == null) {
+      particles[i] = p;
+      forceRegistry.add(particles[i], gravity) ;
+      forceRegistry.add(particles[i], drag) ;
+      forceRegistry.add(particles[i], userForce) ;
+      return;
+    }
+  }
+}
+
+void draw() {
+  background (255);
+  if(!Tower1){
+      rect(10, 710, 80, 70);
+  image(img, 0, 700, 100, 100);
+  }
+
+  if(!Tower2){
+  rect(190, 710, 80, 70);
+  image(img, 180, 700, 100, 100);
+  }
+
+  if(!Tower3){
+     rect(340, 710, 80, 70);
+  image(img, 330, 700, 100, 100);
+  }
+ 
+ if(!Tower4){
+   rect(490, 710, 80, 70);
+  image(img, 480, 700, 100, 100);
+ }
+  
+  if(!Tower5){
+    rect(640, 710, 80, 70);
+  image(img, 630, 700, 100, 100);
+  }
+
+  
+  textSize(24);
+  text("Score: " + score, 10, 20);
+  text("Ammo :" + Ammo, 120, 20);
+
+  line(0, 500, displayWidth, 500);
+  line(0, mouseY, displayWidth, mouseY);
+  line(mouseX, 0, mouseX, displayHeight);
+  forceRegistry.updateForces();
+
+
+  for (int i = 0; i  < NO_Missiles; i++) {
+    if (missiles[i] != null) {
+      missiles[i].update() ;
+      PVector position = missiles[i].position ;
+      if (position.x < xStart && position.y < yStart) {
+
+
+        for (int j = 0; j < explosions.length; j++) {
+          if (explosions[j] == null) {
+            print("j: " + j);
+            explosions[j] = new Explosion(mouseposx, mouseposy);
+            break;
+          }
+        }
+
+
+        missiles[i] = null;
+      } else {
+        ellipse(position.x, position.y, 20, 20) ;
+      }
+    }
+  }
+
+  for (int i =0; i < (MAX_PARTICLES_BASE*10); i++) {
+
+
+
+    if (particles[i] != null) {
+      particles[i].integrate();
+      if (particles[i].update()) {
+        score = score + 10;
+        particles[i] = null;
+        numParticles--;
+        //if(p.age > 0){
+        if (numParticles < MAX_PARTICLES_BASE*.33) {
+
+          //print("HELLLLLOOO");    
+          for (int j =0; j < 3; j++) {
+            //print(j);
+            Particle p = new Particle((int)random(0, MY_WIDTH), 
+              10, 
+              random(-.5f, .5f), 
+              random(-.5f, .5f), 
+              random(0.001f, 0.005f), false) ;
+            addParticle(p);
+            // print("HEEYYYYY");
+          }
+          numParticles = numParticles + 3;
+
+
+
+
+
+          //}
+        }
+      } else {
+        PVector position = particles[i].position;
+
+        fill(100, 100, 200);
+        if (explosions[numExplosions] != null) {
+          //ellipse(explosions[numExplosions].position.x, explosions[numExplosions].position.y, 230, 230);
+        }
+
+        if (particles[i].hit) {
+          fill(0, 0, 0);
+          ellipse(position.x, position.y, 20, 20);
+        } else {
+          ellipse(position.x, position.y, 20, 20);
+        }
+
+        //ellipse(mouseposx, mouseposy, 20,20);
+      }
+
+      for (int j =0; j < numParticles; j++) {
+        for (int m = 0; m < explosions.length; m++) {
+          Particle p1 = particles[j];
+          Explosion e1 = explosions[m];
+          if (p1 != null && e1 != null ) {
+            detectCollision(p1, e1);
+          }
+        }
+      }
+    }
+  } 
+
+
+
+  for (int k = 0; k < explosions.length; k++) {
+    if (explosions[k] != null) {
+      //use for report
+      //ellipse(explosions[k].position.x, explosions[k].position.y, 230, 230);
+      image(img1, explosions[k].position.x-115, explosions[k].position.y-115, 230, 230);
+      explosions[k].update();
+      if (explosions[k].age <= 0) {
+        explosions[k] = null;
+      }
+    }
+  }
+  
+  buildingCollision();
+  
+}
+
+void mouseClicked() {
+  mouseposx = mouseX;
+  mouseposy = mouseY;
+  if(Ammo > 0){
+    xStart = mouseX ;
+    yStart = mouseY ;
+    PVector force = new PVector(xStart-780, yStart-780) ;
+    //Drag drag = new Drag(10, 10) ;
+    for (int i = 0; i < NO_Missiles; i++) {
+      if (missiles[i] == null) {
+        missiles[i] = new Missile(780,780,0,0,xStart, yStart, force);
+        Ammo--;
+      return;
+      }
+    } 
+  }
+}
+
+//void mousePressed() {
+//  xStart = mouseX ;
+//  yStart = mouseY ;
+//}
+
+//// When mouse is released create new vector relative to stored x, y coords
+//void mouseReleased() {
+//  xEnd = mouseX ;
+//  yEnd = mouseY ;
+//  userForce.set(xEnd - xStart, yEnd - yStart) ;
+//  //print("NOOO");
+//}
+
+//void check(){
+//  for(int i =0; i < particles.length; i++){
+//    if(particles[i] !=null){
+//      if(particles[i].position.y > 500 && particles[i].position.y < 600){
+//        particles[i].position = new PVector(1000,1000);
+//      }
+//    }
+//  }
+
+
+//}
+
+void detectCollision(Particle p1, Explosion e1) {
+  PVector particle = new PVector(p1.position.x, p1.position.y);
+  particle.sub(e1.position);
+  if (particle.mag() < 125) {
+    particle.normalize();
+    if (!p1.hit) {
+      float x = (float)(p1.position.x-e1.position.x)*4;
+      float y = (float)(p1.position.y-e1.position.y)*4;
+      explosionforce = new ExplosionForce(new PVector(x, y)) ;
+      forceRegistry.add(p1, explosionforce);
+    }
+    p1.hit = true;
+  }
+}
+
+
+void buildingCollision(){
+  for(int i = 0; i < numParticles; i++){
+    if(particles[i] != null){
+      PVector position = new PVector(particles[i].position.x, particles[i].position.y);
+      if(position.y > 710 && position.y < 780){
+        if(position.x > 10 && position.x < 80 && !Tower1){
+            drawExplosion(position);
+            Tower1 = true;
+              particles[i] = null;
+        }else if(position.x > 190 && position.x < 270  && !Tower2){
+           drawExplosion(position);
+            Tower2 = true;
+            particles[i] = null;
+        }else if(position.x > 340 && position.x < 410 && !Tower3){
+            drawExplosion(position);
+            Tower3 = true;
+            particles[i] = null;
+        }else if(position.x > 490 && position.x < 560 && !Tower4){
+           drawExplosion(position);
+            Tower4 = true;
+            particles[i] = null;
+        }else if(position.x > 640 && position.x < 710 && !Tower5){
+           drawExplosion(position);
+            Tower5 = true;
+            particles[i] = null;
+        }
+        
+        
+      }
+      
+    }
+    
+    
+  }
+  
+  
+  
+  
+  
+}
+
+
+void drawExplosion(PVector position){
+
+           for (int j = 0; j < explosions.length; j++) {
+          if (explosions[j] == null) {
+            print("j: " + j);
+            explosions[j] = new Explosion(position.x, position.y);
+            break;
+          }
+        }
+  
+  
+}

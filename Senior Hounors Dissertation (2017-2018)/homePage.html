@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    /*
+    heading and paragraph tags used to style and position text on the html page.
+    */
+    h2{
+      color: #3465A4;
+      font-weight: bold;
+      font-size: 24px;
+    }
+    h1{
+      color: #3465A4;
+      font-weight: bold;
+      font-size: 24px;
+    }
+    h3{
+      color: #3465A4;
+      font-size: 34px;
+      font-size: 2vw;
+    }
+    p1{
+      color: #3465A4;
+      font-weight: bold;
+      font-size: 24px;
+    }
+    p2{
+      color: #3465A4;
+      font-weight: bold;
+      font-size: 24px;
+    }
+    p3{
+      color: #3465A4;
+      font-weight: bold;
+      font-size: 24px;
+      ;
+    }
+    p4{
+      color: #3465A4;
+      font-weight: bold;
+      font-size: 24px;
+    }
+    /*
+    Colour, Padding and position of forms places on the screen. 
+    inputs with the type of submit, change colour when hovered over to highlight them to users.
+    */
+
+    input[type=text], select {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    input[type=password], select {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    input[type=submit] {
+      width: 100%;
+      background-color: #3465A4;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    input[type=submit]:hover {
+      background-color: #8465A4;
+    }
+    div {
+      float:left;
+      width:45%;
+      padding: 2%;
+      height:40% }
+    .logo{
+      width: 100%;
+
+      text-align: center;
+    }
+    .studentUsername{
+      top:55%;
+      left:55%;
+    }
+    .studentUsernameCheck{
+      top:25%;
+      left:55%;
+    }
+    .teacherUsername{
+      top:55%;
+      left:15%;
+    }
+    .teacherUsernameCheck{
+      top:25%;
+      left:15%;
+    }
+  </style>
+  <body>
+    <!--Heading and Univeristy logo that are affected by CSS -->
+    <div class="logo">
+      <h3>Admin Centre for Customisable GBL Material
+      </h3>
+      <img src="Unilogo.png" alt="University Logo" style="width: 250px;">
+    </div>
+    <!--Set of four forms. Each form launches a seperate PHP. Each form uses POST to keep account details hidden-->
+      <!--This form when submitted lauches PHP file to create a Student Account -->
+      <form method ="POST" action="createAccountStudent.php" method ="POST" autocomplete="off">
+          <div class="studentUsernameCheck">
+            <p2>Create Student Account
+            </p2>
+            <br>
+            Username:
+            <br>
+            <input type="text" name="create_name_student">
+            <br>
+            Password:
+            <br>
+            <input type="password" name="create_password_student">
+            <br>
+            <br>
+            <input type="submit" value="Submit">
+          </div>
+        </form> 
+    <!--This form when submitted lauches PHP file to create a Teacher Account -->
+    <form action="createAccountTeacher.php" method ="POST" autocomplete="off">
+        <div class="teacherUsernameCheck">
+          <p4>Create Teacher Login
+          </p4>
+          <br>
+          Username:
+          <br>
+          <input type="text" name="create_name_teacher">
+          <br>
+          Password:
+          <br>
+          <input type="password" name="create_password_teacher">
+          <br>
+          <br>
+          <input type="submit" value="Submit">
+        </div>
+      </form> 
+       <!--This form when submitted lauches PHP file to login a Student-->
+    <form action="studentLogin2.php" method ="POST" autocomplete="off" >
+        <div class="studentUsername">
+          <p1>Student Login
+          </p1>  
+          <br>
+          Username:
+          <br>
+          <input type="text" name="student_name">
+          <br>
+          Password:
+          <br>
+          <input type="password" name="student_password">
+          <br>
+          <br>
+          <input type="submit" value="Submit">
+        </div>
+      </form> 
+    <!--This form when submitted lauches PHP file to login a Teachers-->
+    <form action="AllLevels.php" method ="POST" autocomplete="off">
+      <div class="teacherUsername">
+        <p3>Teacher Login
+        </p3>  
+        <br>
+        Username:
+        <br>
+        <input type="text" id="teacher_name" name="teacher_name">
+        <br>
+        Password:
+        <br>
+        <input type="password" id="teacher_password" name="teacher_password">
+        <br>
+        <br>
+        <input type="submit" value="Submit">
+      </div>
+    </form> 
+  </body>
+</html>

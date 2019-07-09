@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WS Chat</title>
+    <script type="text/javascript">
+      var server = "ws://" + window.location.host;
+
+      function connect() {
+          var sock = new WebSocket(server);
+
+          sock.onopen = function () {
+              var sendBtn = document.getElementById("send");
+              var connBtn = document.getElementById("connect");
+              connBtn.onclick = function () { sock.close(); };
+              connBtn.innerText = "Disconnect";
+              sendBtn.onclick = function () { sendMessage(sock) };
+          };
+
+          sock.onclose = function () {
+              var sendBtn = document.getElementById("send");
+              var connBtn = document.getElementById("connect");
+              connBtn.onclick = connect;
+              connBtn.innerText = "Connect";
+              sendBtn.onclick = function () {};
+          };
+
+          sock.onmessage = function (e) {
+              console.log(e);
+              var m = JSON.parse(e.data);
+              if(m.type == "agent_message"){
+               var timestamp = new Date(m.payload.id);
+              var div = document.createElement("div");
+              div.class = "message";
+              div.id = m.payload.id;
+              div.innerHTML =
+                timestamp.getHours() + ":" + timestamp.getMinutes() +
+                " < " + m.payload.sender + ">: " + m.payload.text;
+              document.getElementById("messages").appendChild(div);
+              }else{
+                if(m.type == "delivery"){
+                  var element = document.getElementById(m.payload.id);
+                  if(m.payload.success){
+                    element.style.color = "green";
+                  }else{
+                    element.style.color = "red";
+                  }
+                }
+              }
+              
+          };
+      }
+
+      function sendMessage(sock) {
+          var outgoing = document.getElementById("outgoing");
+          var m = {
+            "type": "client_message", 
+            payload : {
+            receiver : document.getElementById("nick").value,
+            text: outgoing.value,
+            id: Date.now(),
+            }
+            };
+             var timestamp = new Date(m.payload.id);
+            var div = document.createElement("div");
+              div.class = "message";
+              div.id = m.payload.id;
+             div.innerHTML =
+                timestamp.getHours() + ":" + timestamp.getMinutes() +
+                " < " + "caf8" + ">: " + m.payload.text;
+              document.getElementById("messages").appendChild(div);
+          
+          sock.send(JSON.stringify(m));
+          outgoing.value = "";
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Websocket chat</h1>
+    <div>
+      Nick: <input id="nick" pattern="" type="text">
+      <button id="connect" onclick="connect()">Connect</button>
+    </div>
+    <br>
+    <div>
+      <input id="outgoing" type="text">
+      <button id="send">Send</button>
+    </div>
+    <br>
+    <div id="messages"></div>
+  </body>
+</html>

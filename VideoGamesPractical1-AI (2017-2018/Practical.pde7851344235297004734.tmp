@@ -1,0 +1,644 @@
+  float x=width/2;
+  float y=height/2;
+  float xvel=0;
+  float yvel=0;
+  float frict = 0.1;
+  float vel = 0.6;
+  float xSpeed = 5;
+  float ySpeed = 5;
+  int Healthtimer = 0;
+  int Speedtimer = 0;
+  int Weapontimer = 0;
+  float healthBarWidth = 50;
+  float MAX_HEALTH = 100;
+  final int MY_WIDTH = 800 ;
+  final int MY_HEIGHT = 800 ;
+  Character character;
+  AISeeker seeker;
+  AIBounce bounce;
+  AIWall wall;
+  AITrapSetter setter;
+  PVector pursueTarget, direction ;
+  Bullet b1;
+  float targetX, targetY;
+  Bullet[] bullets = new Bullet[50];
+  AISeeker[] seekers = new AISeeker[50];
+  AIBounce[] bouncers = new AIBounce[50];
+  AIWall [] walls = new AIWall[50];
+  AITrapSetter [] setters = new AITrapSetter[50];
+  MineTrap [] traps = new MineTrap[50];
+  Explosion [] explosions = new Explosion[50];
+  HealthPack [] packs = new HealthPack[5];
+  SpeedUpgrade [] speeds = new SpeedUpgrade[5];
+  WeaponUpgrade [] weapons = new WeaponUpgrade[5];
+  
+   
+  boolean isLeft, isRight, isUp, isDown; 
+   
+  void setup() {
+    //fullScreen();
+    size(800, 800);
+    //fullScreen();
+    background(0);
+    frameRate(30);
+    character = new Character(MY_WIDTH/2, MY_HEIGHT/2, 0f,0f,0f,1000);
+    bounce = new AIBounce((int)random(0, width),(int)random(0, height), random(3,5), random(3,5));
+    setter =  new AITrapSetter((int)random(0, width),(int)random(0, height),(int)random(0, width),(int)random(0, height), (int)random(100, 250));
+    wall = new AIWall(0,0,4f,4f);
+    setters[0] = setter;
+    walls[0] = wall;
+    bouncers[0] = bounce;
+    seeker = new AISeeker(0, 0, 0f,1f,1f,0f, false) ;
+    seekers[0] = seeker;
+    for(int i = 0; i < 5; i ++){
+      seeker = new AISeeker((int)random(0,width), (int)random(0,height), 0f,1f,1f,0f, true) ;
+      seekers[i] = seeker;
+    }
+    x=width/2;
+    y=height/2;
+      pursueTarget = new PVector(0, 0) ;
+    direction = new PVector(0, 0) ;
+  }
+   
+  void draw() {
+    healthPackUpdate();
+    speedBoostUpdate();
+    weaponBoostUpdate();
+    timerUpdates();
+    
+   
+    if(character.health < 1){
+      exit();
+    }
+    
+    background(255);//cls
+    fill(0);
+    textSize(32);
+    text("Health: " + character.health,300, 300);
+    drawCharacter();
+    seekersUpdate();
+    settersUpdate();
+    trappersUpdate();
+    
+   
+  
+    
+
+  
+  
+  
+ 
+  
+  
+  for(int i = 0; i < explosions.length; i++){
+    if(explosions[i] != null){
+      explosions[i].update();
+    //print("NONONONONO");
+    fill(100,100,100);
+    ellipse(explosions[i].position.x, explosions[i].position.y, explosions[i].radius, explosions[i].radius);
+     //println("LauraFleming: " + explosions[i].radius);
+    if(explosions[i].radius < 1){
+      explosions[i] = null;
+    }
+    }
+    
+  }
+  
+  
+  for(int i = 0; i < bouncers.length; i++){
+    if(bouncers[i] != null){
+      bouncers[i].AIBounceUpdate();
+      fill(0,255,0);
+      ellipse(bouncers[i].position.x, bouncers[i].position.y, 20, 20); 
+      noStroke();
+  // Get fraction 0->1 and multiply it by width of bar
+  float drawWidth = (bouncers[i].health / MAX_HEALTH) * healthBarWidth;
+  rect(bouncers[i].position.x + 15, bouncers[i].position.y + 15, drawWidth, 10);
+    }
+  }
+  
+   for(int i = 0; i < walls.length; i++){
+    if(walls[i] != null){
+     walls[i].AIWallUpdate();
+      ellipse(walls[i].position.x,walls[i].position.y, 30, 30);   
+      noStroke();
+  // Get fraction 0->1 and multiply it by width of bar
+  float drawWidth = (walls[i].health / MAX_HEALTH) * healthBarWidth;
+  rect(walls[i].position.x + 15, walls[i].position.y + 15, drawWidth, 10);
+    }
+  }
+  
+  for(int i =0; i < packs.length; i++){
+    if(packs[i] != null){
+      fill(255,255,0);
+      //println("MarryLaura");
+      rect(packs[i].position.x, packs[i].position.y, 15, 15);
+      packs[i].timer--;
+      if(packs[i].timer < 1){
+        packs[i] = null;
+      }
+    }
+  }
+  
+  for(int i =0; i < packs.length; i++){
+        if(packs[i] != null){
+          if(detectCollisionH(packs[i])){
+            packs[i] = null;
+          }
+        }
+  }
+  
+  
+  
+  for(int i =0; i < speeds.length; i++){
+    if(speeds[i] != null){
+      fill(255,0,255);
+      //println("MarryLaura");
+      rect(speeds[i].position.x, speeds[i].position.y, 15, 15);
+      speeds[i].timer--;
+      if(speeds[i].timer < 1){
+        speeds[i] = null;
+      }
+    }
+  }
+  
+  for(int i =0; i < speeds.length; i++){
+        if(speeds[i] != null){
+          if(detectCollisionSpeed(speeds[i])){
+            speeds[i] = null;
+          }
+        }
+  }
+  
+  
+  
+  
+  for(int i =0; i < weapons.length; i++){
+    if(weapons[i] != null){
+      fill(0,255,255);
+      //println("MarryLaura");
+      rect(weapons[i].position.x, weapons[i].position.y, 15, 15);
+      weapons[i].timer--;
+      if(weapons[i].timer < 1){
+        weapons[i] = null;
+      }
+    }
+  }
+  
+  for(int i =0; i < weapons.length; i++){
+        if(weapons[i] != null){
+          if(detectCollisionWeapon(weapons[i])){
+            weapons[i] = null;
+          }
+        }
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    //yvel=yvel*frict;
+   // xvel=xvel*frict;
+   character.update(isLeft, isRight, isUp, isDown);
+   for(int i =0; i < bullets.length; i ++){
+      if(bullets[i]!=null){
+         bullets[i].bulletUpdate();
+      for(int j = 0; j < seekers.length; j++){
+   
+    if(bullets[i] != null && seekers[j] != null){
+          if(detectCollisionS(bullets[i], seekers[j])){
+            bullets[i] = null;
+            if(seekers[j].health > 0){
+             seekers[j].health  = seekers[j].health - character.weaponPower;
+            }
+            if(seekers[j].health <= 0){
+              seekers[j] = null;
+            }
+
+            
+          }
+        }
+      }
+      for(int k = 0; k < walls.length; k++){
+        if(bullets[i] != null && walls[k] != null){
+          if(detectCollisionW(bullets[i], walls[k])){
+            bullets[i] = null;
+             if(walls[k].health > 0){
+             walls[k].health  = walls[k].health - character.weaponPower;
+            }
+            if(walls[k].health <= 0){
+              walls[k] = null;
+            }
+            
+          }
+        }
+      }
+      
+      
+         for(int g =  0; g < setters.length; g++){
+        if(bullets[i] != null && setters[g] != null){
+          if(detectCollisionTrap(bullets[i], setters[g])){
+            bullets[i] = null;
+             if(setters[g].health > 0){
+            setters[g].health  = setters[g].health - character.weaponPower;
+            }
+            if(setters[g].health <= 0){
+             setters[g] = null;
+            }
+            
+          }
+        }
+      }
+      
+      
+      
+         for(int m = 0; m < bouncers.length; m++){
+        if(bullets[i] != null && bouncers[m] != null){
+          if(detectCollisionB(bullets[i], bouncers[m])){
+            bullets[i] = null;
+            if(bouncers[m].health > 0){
+              bouncers[m].health  = bouncers[m].health - character.weaponPower;
+            }
+            if(bouncers[m].health <= 0){
+              bouncers[m] = null;
+            }
+            
+          }
+        }
+      }
+      
+         
+         
+         if(bullets[i] != null){
+         if(bullets[i].position.x == bullets[i].target.x && bullets[i].position.y == bullets[i].target.y){
+           bullets[i] = null;
+         }else{
+           ellipse(bullets[i].position.x, bullets[i].position.y, 5, 5);
+         }
+      }
+      }
+    }
+     
+    for(int i = 0; i < explosions.length; i++){
+      if(explosions[i] != null){
+         if(detectCollisionCExplosion(character, explosions[i])){
+           character.health = character.health - 10;
+         }
+      }
+    }
+    
+    
+    
+    
+    
+ 
+  }
+    void seekersUpdate(){
+      print("xmaswithLaura");
+      for(int j = 0; j < seekers.length; j++){
+        if(seekers[j] != null){
+         if(detectCollisionCS(character, seekers[j])){
+           if(seekers[j].sucker){
+             character.health--;
+           }else{
+             character.health  = character.health - 50;
+             seekers[j] = null;
+           }
+         }
+        }
+    }
+      
+      for(int i = 0; i < seekers.length; i++){
+  if(seekers[i] != null){
+  float xt = seekers[i].position.x, yt = seekers[i].position.y ;
+    fill(0) ;
+    ellipse(xt, yt, 30, 30) ;
+    noStroke();
+  // Get fraction 0->1 and multiply it by width of bar
+  float drawWidth = (seekers[i].health / MAX_HEALTH) * healthBarWidth;
+  rect(seekers[i].position.x + 15, seekers[i].position.y + 15, drawWidth, 10);
+  
+    
+    // Update Terminator
+    //print("1: " + direction.x);
+     //print("2: " + direction.y); 
+      //print("3: " + xe); 
+       //print("4: " + ye); 
+        //direction.y = ye - yt ;
+    direction.x = character.position.x  - xt ;
+    direction.y = character.position.y - yt ;
+    float distance = direction.mag() ;
+    float speed = seekers[i].velocity.mag() ;
+    float prediction = distance / speed ;
+    
+    pursueTarget = character.velocity.get() ;
+    pursueTarget.mult(prediction) ;
+    pursueTarget.add(character.position) ;
+    line(character.position.x, character.position.y, 
+         pursueTarget.x, pursueTarget.y) ;
+    
+    seekers[i].integrate(pursueTarget, 0, character.position) ;
+  }
+  }
+      
+      
+      
+      
+    }
+    void trappersUpdate(){
+       for(int i = 0; i < traps.length; i++){
+    if(traps[i] != null){
+      rect(traps[i].position.x, traps[i].position.y, 20,20);
+      traps[i].update();
+      if(traps[i].age < 0){
+        for(int j = 0; j < explosions.length; j++){
+          if(explosions[j] == null){
+            //print("Help");
+            Explosion ex = new Explosion(traps[i].position.x, traps[i].position.y, 1);
+            explosions[j] = ex;
+            break;
+          }
+          
+        }
+       traps[i] = null;
+      }
+      
+    }
+  }
+      
+      
+      
+    }
+    
+    
+    
+   void settersUpdate(){
+       
+  for(int i = 0; i < setters.length; i ++){
+    if(setters[i] != null){
+      fill(255,14,127);
+      setters[i].update();
+      ellipse(setters[i].position1.x, setters[i].position1.y, 20, 20);  
+      noStroke();
+  // Get fraction 0->1 and multiply it by width of bar
+  float drawWidth = (setters[i].health / MAX_HEALTH) * healthBarWidth;
+  rect(setters[i].position1.x + 15, setters[i].position1.y + 15, drawWidth, 10);
+      //println("pos1: " + setters[i].position1.x + " pos2: " + setters[i].position2.x);
+      if(setters[i].position1.x == setters[i].position2.x && setters[i].position1.y == setters[i].position2.y){
+              setters[i].position1 = setters[i].position2;
+              setters[i].position2 = new PVector((int)random(0,width), (int)random(0,height));
+      }
+      if(setters[i].timer < 0){
+        setters[i].timer = (int)random(100, 250);
+        for(int j= 0; j < traps.length; j++){
+          if(traps[j] == null){
+            //print("LauraF");
+             MineTrap trap = new MineTrap(setters[i].position1.x, setters[i].position1.y, 80); 
+             traps[j] = trap;
+             break;
+          }
+
+        }
+       
+      }
+
+    }
+    
+  }
+     
+   }
+    
+   void drawCharacter(){
+    float xe = character.position.x, ye = character.position.y ;
+    fill(255,0,0) ;
+    ellipse(xe, ye, 30, 30) ;
+    // Show orientation
+    int newxe = (int)(xe + 10 * cos(character.orientation)) ;
+    int newye = (int)(ye + 10 * sin(character.orientation)) ;
+    fill(0);
+    ellipse(newxe, newye, 10, 10) ;  
+    fill(50);
+  
+     
+   }
+    
+  boolean detectCollisionTrap(Bullet b1, AITrapSetter s1){
+    PVector bullet = new PVector(b1.position.x, b1.position.y);
+    bullet.sub(s1.position1);
+    if(bullet.mag() < 17.5){
+      return true;
+    }
+    return false;
+    
+  }
+  
+  
+   boolean detectCollisionWeapon(WeaponUpgrade p1){
+    PVector pos = character.position;
+    PVector p2 = p1.position;
+    if(pos.x >= p2.x && pos.x < (p2.x + 15)){
+      if(pos.y >= p2.y && pos.y < (p2.y + 15)){
+        println("charcterx : " + pos.x + " characetery: " + pos.y);
+        println("healthx : " + p2.x + " healthy: " + p2.y);
+        character.weapontimer = 50;
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  
+  
+   boolean detectCollisionSpeed(SpeedUpgrade p1){
+    PVector pos = character.position;
+    PVector p2 = p1.position;
+    if(pos.x >= p2.x && pos.x < (p2.x + 15)){
+      if(pos.y >= p2.y && pos.y < (p2.y + 15)){
+        println("charcterx : " + pos.x + " characetery: " + pos.y);
+        println("healthx : " + p2.x + " healthy: " + p2.y);
+        character.speedtimer = 50;
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  
+  
+  
+  boolean detectCollisionH(HealthPack p1){
+    PVector pos = character.position;
+    PVector p2 = p1.position;
+    if(pos.x >= p2.x && pos.x < (p2.x + 15)){
+      if(pos.y >= p2.y && pos.y < (p2.y + 15)){
+        println("charcterx : " + pos.x + " characetery: " + pos.y);
+        println("healthx : " + p2.x + " healthy: " + p2.y);
+        character.health = character.health + 50;
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  
+  boolean detectCollisionS(Bullet b1, AISeeker s1){
+    PVector bullet = new PVector(b1.position.x, b1.position.y);
+    bullet.sub(s1.position);
+    if(bullet.mag() < 17.5){
+      return true;
+    }
+    return false;
+    
+  }
+   boolean detectCollisionCExplosion(Character c1, Explosion e1){
+    PVector character = new PVector(c1.position.x, c1.position.y);
+    character.sub(e1.position);
+    if(character.mag() < e1.radius/2){
+    return true;
+    }else{
+     return false; 
+    }
+  }
+  
+  
+  boolean detectCollisionCS(Character c1, AISeeker s1){
+    PVector character = new PVector(c1.position.x, c1.position.y);
+    character.sub(s1.position);
+    if(character.mag() < 30){
+    return true;
+    }else{
+     return false; 
+    }
+  }
+  
+  boolean detectCollisionB(Bullet b1, AIBounce ab1){
+    PVector bullet = new PVector(b1.position.x, b1.position.y);
+    bullet.sub(ab1.position);
+    if(bullet.mag() < 12.5){
+      return true;
+    }else{
+      return false;
+    }
+   
+  }
+  
+    boolean detectCollisionW(Bullet b1, AIWall w1){
+      PVector bullet = new PVector(b1.position.x, b1.position.y);
+      bullet.sub(w1.position);
+      if(bullet.mag() < 17.5){
+        return true;
+      }else{
+        return false;
+      }
+    }
+    void healthPackUpdate(){
+       if(Healthtimer == 0){
+      for(int i = 0; i < packs.length; i ++){
+        if(packs[i] == null){
+          //println("Lauraismysoulate");
+          packs[i] = new HealthPack((int)random(0, width),(int)random(0, height), (int)random(50,200));
+          Healthtimer = (int)random(30, 80);
+          break;
+        }
+      }
+    }
+      
+    }
+    
+    void speedBoostUpdate(){
+      if(Speedtimer == 0){
+      for(int i = 0; i < speeds.length; i ++){
+        if(speeds[i] == null){
+          //println("Lauraismysoulate");
+          speeds[i] = new SpeedUpgrade((int)random(0, width),(int)random(0, height), (int)random(50,200));
+          Speedtimer = (int)random(30, 80);
+          break;
+        }
+      }
+    }
+    }
+    
+    void weaponBoostUpdate(){
+        if(Weapontimer == 0){
+      for(int i = 0; i < weapons.length; i ++){
+        if(weapons[i] == null){
+          //println("Lauraismysoulate");
+          weapons[i] = new WeaponUpgrade((int)random(0, width),(int)random(0, height), (int)random(50,200));
+          Weapontimer = (int)random(30, 80);
+          break;
+        }
+      }
+    }
+      
+    }
+    
+    
+    void timerUpdates(){
+       if(character.speedtimer > 0){
+      character.speedtimer--;
+    }
+    
+    if(character.weapontimer > 0){
+      character.weapontimer--;
+    }
+    Healthtimer--;
+    Speedtimer--;
+    Weapontimer--;
+      
+    }
+     
+   
+   
+  
+  void mousePressed(){
+    targetX = mouseX;
+    targetY = mouseY;
+    b1 = new Bullet(character.position.x, character.position.y, targetX, targetY);
+    for(int i =0; i < bullets.length; i ++){
+      if(bullets[i]==null){
+        bullets[i] = b1;
+        return;
+      }
+    }
+    
+    
+  }
+  
+   
+  void keyPressed() {
+    setMove(keyCode, true);
+  }
+   
+  void keyReleased() {
+    setMove(keyCode, false);
+  }
+   
+  boolean setMove(int k, boolean b) {
+    switch (k) {
+    case 'W':
+      return isUp = b;
+   
+    case 'S':
+      return isDown = b;
+   
+    case 'A':
+      return isLeft = b;
+   
+    case 'D':
+      return isRight = b;
+   
+    default:
+    yvel = 0;
+    xvel = 0;
+    //print("Laura");
+      return b;
+    }
+  
+  }
